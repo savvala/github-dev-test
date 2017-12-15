@@ -14,37 +14,39 @@ class Result extends React.Component {
   }
 
   handleSearch = (e) => {
-    this.setState({ query: e.target.value });
+    this.setState({ user: e.target.value });
   }
 
   componentDidMount() {
     console.log('inside did mount');
-    this.getResults();
+    // this.getResults();
   }
 
   getResults = () =>  {
     console.log('inside will mount');
     Axios
-      .get(`https://api.github.com/users/${this.state.user.current_user_url}`)
-      .then(res => this.setState({ repos: res.data.current_user_repositories_url }))
+      .get(`https://api.github.com/users/${this.state.user}/repos`)
+      .then(res => {
+        console.log(res);
+        this.setState({ repos: res.data });
+      })
       .catch(err => console.log(err));
   }
 
   render() {
-    console.log(this.state.user);
     return(
       <main>
-        <SearchBar handleSearch={this.handleSearch}/>
+        <SearchBar handleSearch={this.handleChange}/>
         <header className="row">
           <h1>Repositories</h1>
         </header>
         <div>
-          {.map((repo, i) => {
+          {this.state.user && this.state.repos.map((repo, i) => {
             return(
               <div key={i} className="row">
                 <div className="col-md-8">
                   <div>
-                    {this.state.user.current_user_repositories_url}
+                    {repo.name}
                   </div>
                 </div>
               </div>
