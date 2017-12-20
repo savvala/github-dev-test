@@ -6,8 +6,19 @@ class Result extends React.Component {
   state = {
     user: '',
     query: '',
+    sortBy: 'date',
     repos: []
   }
+
+  handleSort = (e) => {
+    const [sortBy] = e.target;
+    this.setState({ sortBy }, () => this.sortFilter());
+  }
+
+  sortFilter = () => {
+    const { sortBy } = this.state;
+  }
+
   handleChange = ({ target: { value }}) => {
     this.setState({ user: value },
       () => this.getResults() );
